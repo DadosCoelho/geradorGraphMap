@@ -1,0 +1,42 @@
+# Ambiente virtual
+venv/
+.venv/
+
+# Pasta de cache com arquivos gerados (JSON e PNG)
+cache/
+
+# Arquivos temporários do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de cache e temporários do sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Arquivos de build e distribuição
+build/
+dist/
+*.egg-info/
+
+# Arquivos de configuração do editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de cache de dependências
+pip-wheel-metadata/
+.pip-cache/
+.wheel-cache/
+
+# Arquivos de teste/cobertura
+.coverage
+coverage.xml
+*.cover
+*.pytest_cache/
+
+# Arquivos de ambiente local
+.env
+.local
