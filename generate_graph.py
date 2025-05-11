@@ -11,7 +11,7 @@ ox.settings.log_file = False  # Desativa logs em arquivo
 ox.settings.log_console = False  # Exibe logs no console para depuração
 
 # Definir o local (bairro específico)
-place_name = "Redonda, Teresina, Piauí, Brazil"
+place_name = "Campestre, Teresina, Piauí, Brazil"
 
 # Função para criar um nome de arquivo seguro a partir do endereço
 def create_safe_filename(place_name):
@@ -49,10 +49,15 @@ def graph_to_json(graph):
 
     # Extrair nós (interseções)
     for node, data in graph.nodes(data=True):
+        has_traffic_signals = False
+        if "traffic_signals" in data or "crossing:traffic_signals" in data or "highway" in data and data["highway"] == "traffic_signals":
+            has_traffic_signals = True
+
         nodes.append({
             "id": str(node),
             "latitude": data["y"],
-            "longitude": data["x"]
+            "longitude": data["x"],
+            "has_traffic_signals": has_traffic_signals
         })
 
     # Extrair arestas (ruas)
@@ -87,7 +92,14 @@ with open(json_filename, "w") as f:
     json.dump(graph_json, f, indent=2)
 
 # Visualizar o grafo
-fig, ax = ox.plot_graph(graph, node_size=10, edge_color="blue", edge_linewidth=1, show=False, close=False)
+node_color = []
+for node, data in graph.nodes(data=True):
+    if data.get("has_traffic_signals", False):
+        node_color.append("red")
+    else:
+        node_color.append("blue")
+
+fig, ax = ox.plot_graph(graph, node_color=node_color, node_size=10, edge_color="blue", edge_linewidth=1, show=False, close=False)
 
 # Salvar a imagem do grafo na pasta especificada
 image_filename = os.path.join(output_dir, f"{file_base_name}.png")
